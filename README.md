@@ -56,7 +56,12 @@ docker compose run --rm app php artisan key:generate
 <ol start="6">
 <li>Сервер доступен по адресу:</li>
 </ol>
-<pre><code>http://localhost:8000
+<pre><code>http://localhost:8000/api/projects/
+</code></pre>
+<ol start="7">
+<li>swagger доступен по адресу:</li>
+</ol>
+<pre><code>http://localhost:8000/swagger.html
 </code></pre>
 <hr>
 <h2 id="endpoints-api">Endpoints API</h2>
