@@ -39,6 +39,8 @@ docker compose run --rm app php artisan key:generate
 <ol start="3">
 <li>Сборка контейнера и запуск:</li>
 </ol>
+<pre><code class="language-bash">composer install
+</code></pre>
 <pre><code class="language-bash">docker compose up -d --build
 </code></pre>
 <ol start="4">
@@ -47,6 +49,11 @@ docker compose run --rm app php artisan key:generate
 <pre><code class="language-bash">docker compose exec app php artisan migrate
 </code></pre>
 <ol start="5">
+<li>Запускаем фабрики и заполняем бд</li>
+</ol>
+<pre><code class="language-bash">docker compose exec app php artisan db:seed
+</code></pre>
+<ol start="6">
 <li>Сервер доступен по адресу:</li>
 </ol>
 <pre><code>http://localhost:8000
