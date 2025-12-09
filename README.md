@@ -1,59 +1,128 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
-
-## About Laravel
-
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+<h1 id="project-api">Project API</h1>
+<p>REST API для управления проектами, на Laravel с использованием Docker.</p>
+<hr>
+<h2 id="описание">Описание</h2>
+<p>Проект предоставляет:</p>
+<ul>
+<li>CRUD для проектов</li>
+<li>Проверку доступности URL проектов с логированием времени ответа</li>
+<li>Кастомную обработку ошибок через <code>Handler</code></li>
+<li>Юнит и Feature тесты с моками HTTP</li>
+<li>Полную работу через Docker</li>
+</ul>
+<hr>
+<h2 id="структура-проекта">Структура проекта</h2>
+<ul>
+<li><code>app/Models/Project.php</code> модель проекта</li>
+<li><code>app/Http/Controllers/ProjectController.php</code> контроллер API</li>
+<li><code>app/Services/UrlCheckService.php</code> сервис проверки URL</li>
+<li><code>app/Exceptions/Handler.php</code> кастомная обработка ошибок</li>
+<li><code>tests/Feature</code> feature тесты</li>
+<li><code>tests/Unit</code> юнит тесты</li>
+<li><code>tests/Integration</code> Интеграционные тесты</li>
+<li><code>docker-compose.yml</code> – конфигурация Docker</li>
+</ul>
+<hr>
+<h2 id="установка-и-запуск-через-docker">Установка и запуск через Docker</h2>
+<ol>
+<li>Клонирование проекта:</li>
+</ol>
+<pre><code class="language-bash">git clone https://github.com/matvey192/LaravelProject.git
+cd project-name
+</code></pre>
+<ol start="2">
+<li>Копируем <code>.env</code>генерация ключа приложения:</li>
+</ol>
+<pre><code class="language-bash">cp .env.example .env
+docker compose run --rm app php artisan key:generate
+</code></pre>
+<ol start="3">
+<li>Сборка контейнера и запуск:</li>
+</ol>
+<pre><code class="language-bash">docker compose up -d --build
+</code></pre>
+<ol start="4">
+<li>Делаем миграции базы данных:</li>
+</ol>
+<pre><code class="language-bash">docker compose exec app php artisan migrate
+</code></pre>
+<ol start="5">
+<li>Сервер доступен по адресу:</li>
+</ol>
+<pre><code>http://localhost:8000
+</code></pre>
+<hr>
+<h2 id="endpoints-api">Endpoints API</h2>
+<table>
+<thead>
+<tr>
+<th>Метод</th>
+<th>URL</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GET</td>
+<td>/api/projects</td>
+<td>Список проектов</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/api/projects/{id}</td>
+<td>Просмотр проекта</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/api/projects</td>
+<td>Создание проекта</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>/api/projects/{id}</td>
+<td>Обновление проекта</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>/api/projects/{id}</td>
+<td>Удаление проекта</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/api/projects/{id}/check</td>
+<td>Проверка доступности URL проекта</td>
+</tr>
+</tbody></table>
+<h3 id="пример-ответа-apiprojectsidcheck">Пример ответа <code>/api/projects/{id}/check</code></h3>
+<pre><code class="language-json">{
+    &quot;status&quot;: &quot;available&quot;,
+    &quot;http_code&quot;: 200,
+    &quot;response_time_ms&quot;: 123,
+    &quot;checked_at&quot;: &quot;2025-12-05T12:34:56Z&quot;
+}
+</code></pre>
+<hr>
+<h2 id="обработка-ошибок">Обработка ошибок</h2>
+<ul>
+<li><code>ModelNotFoundException</code> → JSON с кодом 404</li>
+</ul>
+<pre><code class="language-json">{
+  &quot;success&quot;: false,
+  &quot;code&quot;: 404,
+  &quot;error&quot;: &quot;model_not_found&quot;,
+  &quot;message&quot;: &quot;Project с id 1000 не найден&quot;,
+  &quot;details&quot;: null
+}
+</code></pre>
+<ul>
+<li><code>ValidationException</code> → JSON с кодом 422</li>
+<li><code>AccessDeniedHttpException</code> → JSON с кодом 403</li>
+<li><code>RequestException</code> с таймаутом → JSON с кодом 504</li>
+<li>Остальные ошибки → JSON с кодом 500 (с трассировкой в режиме debug)</li>
+</ul>
+<hr>
+<h2 id="тестирование">Тестирование</h2>
+<p>В проекте есть <strong>юнит и feature-тесты</strong>, включая мокинг HTTP-запросов для проверки доступности URL.</p>
+<p>Запуск тестов через Docker:</p>
+<pre><code class="language-bash">docker compose exec app php artisan test
+</code></pre>
+<hr>
