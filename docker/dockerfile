@@ -1,0 +1,23 @@
+FROM php:8.4-fpm
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    git curl zip unzip libonig-dev libxml2-dev libzip-dev sqlite3 libsqlite3-dev \
+    && docker-php-ext-install pdo pdo_mysql pdo_sqlite
+
+# Install Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+USER root
+
+WORKDIR /var/www
+
+# Copy code
+COPY . .
+
+# Install Laravel dependencies
+RUN composer install
+
+# Permissions
+RUN chown -R www-data:www-data /var/www
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache

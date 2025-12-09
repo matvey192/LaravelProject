@@ -1,0 +1,200 @@
+openapi: 3.0.3
+info:
+  title: Project Manager API
+  version: 1.0.0
+  description: API для управления проектами веб-студии
+servers:
+  - url: http://localhost:8000/api
+paths:
+  /projects:
+    get:
+      summary: Получить список проектов
+      parameters:
+        - in: query
+          name: platform
+          schema:
+            type: string
+            enum: [WordPress, Bitrix, Custom, Other]
+          description: Фильтр по платформе
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum: [development, production, maintenance, archived]
+          description: Фильтр по статусу
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: Номер страницы
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: Количество записей на странице
+      responses:
+        '200':
+          description: Список проектов
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+    post:
+      summary: Создать новый проект
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectCreate'
+      responses:
+        '201':
+          description: Проект создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+
+  /projects/{id}:
+    get:
+      summary: Получить проект по ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Проект найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '404':
+          description: Проект не найден
+    put:
+      summary: Обновить проект
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectUpdate'
+      responses:
+        '200':
+          description: Проект обновлён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '404':
+          description: Проект не найден
+    delete:
+      summary: Удалить проект
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Проект удалён
+        '404':
+          description: Проект не найден
+
+  /projects/{id}/check:
+    get:
+      summary: Проверить доступность сайта проекта
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Результат проверки доступности
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_code:
+                    type: integer
+                  response_time:
+                    type: string
+                  available:
+                    type: string
+                  checked_at:
+                    type: string
+        '404':
+          description: Проект не найден
+
+components:
+  schemas:
+    Project:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        url:
+          type: string
+        platform:
+          type: string
+          enum: [WordPress, Bitrix, Custom, Other]
+        status:
+          type: string
+          enum: [development, production, maintenance, archived]
+        description:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+    ProjectCreate:
+      type: object
+      required:
+        - name
+        - url
+        - platform
+        - status
+      properties:
+        name:
+          type: string
+        url:
+          type: string
+        platform:
+          type: string
+          enum: [WordPress, Bitrix, Custom, Other]
+        status:
+          type: string
+          enum: [development, production, maintenance, archived]
+        description:
+          type: string
+    ProjectUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        url:
+          type: string
+        platform:
+          type: string
+          enum: [WordPress, Bitrix, Custom, Other]
+        status:
+          type: string
+          enum: [development, production, maintenance, archived]
+        description:
+          type: string
